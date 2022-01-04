@@ -24,7 +24,6 @@ public class Calc2 extends HttpServlet{
 		HttpSession session = request.getSession();
 		Cookie[] cookies = request.getCookies();
 		
-		
 		String temp = request.getParameter("value");
 		String operator = request.getParameter("operator");
 		
@@ -71,6 +70,7 @@ public class Calc2 extends HttpServlet{
 				result = x - y;
 			}
 			
+			out.print(x + "...." + y + "...." + op + "....");
 			out.print(result);
 			
 		} else {
@@ -81,16 +81,12 @@ public class Calc2 extends HttpServlet{
 			//application.setAttribute("operator", operator);
 			
 			Cookie valueCookie = new Cookie("value", Integer.toString(value));
-			Cookie opCookie = new Cookie("operatior", operator);
-			
-			valueCookie.setPath("/calc2");
-			opCookie.setPath("/calc2");
-			
-			valueCookie.setMaxAge(10);
-			opCookie.setMaxAge(10);
+			Cookie opCookie = new Cookie("operator", operator);
 			
 			response.addCookie(valueCookie);
 			response.addCookie(opCookie);
+			
+			response.sendRedirect("calc2.html");
 		}
 	}
 	
