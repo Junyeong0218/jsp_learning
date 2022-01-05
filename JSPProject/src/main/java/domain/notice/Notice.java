@@ -1,6 +1,6 @@
 package domain.notice;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +17,7 @@ public class Notice {
 	private String title;
 	private String writerId;
 	private String content;
-	private Date regDate;
+	private LocalDateTime regDate;
 	private int hit;
 	private String files;
 

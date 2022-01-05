@@ -36,7 +36,7 @@ public class ReadNoticeDtl extends HttpServlet {
 		
 		request.setAttribute("notice", notice);
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/notice/detail.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/notice/detail.jsp");
 		dispatcher.forward(request, response);
 	}
 	

@@ -3,6 +3,8 @@
 <%@page import="domain.notice.Notice"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
 <!DOCTYPE html>
 <html>
 
@@ -176,23 +178,22 @@
 					</thead>
 					<tbody>
 
-					<%
-					List<Notice> notices = (List<Notice>)request.getAttribute("notices");
-					for(Notice notice : notices) {
-						pageContext.setAttribute("notice", notice);
-					%>
+					<c:forEach var="notice" items="${notices}">
 							
 					<tr>
 						<td>${notice.id}</td>
 						<td class="title indent text-align-left"><a href="detail?id=${notice.id}">${notice.title}</a></td>
 						<td>${notice.writerId}</td>
 						<td>
-							${notice.regDate}
+							<fmt:parseDate value="${notice.regDate}" pattern="yyyy-MM-dd" var="parsedDate" type="both"/>
+							<fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDate}"/>
 						</td>
-						<td>${notice.hit}</td>
+						<td>
+							<fmt:formatNumber value="${notice.hit}"/>
+						</td>
 					</tr>
-							
-					<%} %>
+					
+					</c:forEach>
 					
 					
 					</tbody>
@@ -205,22 +206,36 @@
 			</div>
 
 			<div class="margin-top align-center pager">	
+			
+	<c:set var="page" value="${empty param.list?1:param.list}" />
+	<c:set var="startNum" value="${page-(page-1)%5}" />
+	<c:set var="lastNum" value="23" />
 		
 	<div>
 		
-		
-		<span class="btn btn-prev" onclick="alert('이전 페이지가 없습니다.');">이전</span>
+		<c:if test="${startNum > 1}">
+			<a href="?list=${startNum - 5}" class="btn btn-prev">이전</a>
+		</c:if>
+		<c:if test="${startNum <= 1}">
+			<span class="btn btn-prev" onclick="alert('이전 페이지가 없습니다.');">이전</span>
+		</c:if>
 		
 	</div>
+	
 	<ul class="-list- center">
-		<li><a class="-text- orange bold" href="?p=1&t=&q=" >1</a></li>
-				
+	
+		<c:forEach var="i" begin="0" end="4">
+			<li><a class="-text- orange bold" href="?list=${startNum+i}" >${startNum+i}</a></li>
+		</c:forEach>
+		
 	</ul>
 	<div>
-		
-		
-			<span class="btn btn-next" onclick="alert('다음 페이지가 없습니다.');">다음</span>
-		
+			<c:if test="${startNum + 5 < lastNum}">
+				<a href="?list=${startNum + 5}" class="btn btn-next">다음</a>
+			</c:if>
+			<c:if test="${startNum + 5 >= lastNum}">
+				<span class="btn btn-next" onclick="alert('다음 페이지가 없습니다.');">다음</span>
+			</c:if>		
 	</div>
 	
 			</div>

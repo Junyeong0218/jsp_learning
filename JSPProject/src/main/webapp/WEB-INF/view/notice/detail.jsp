@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"  %>
 <!DOCTYPE html>
 <html>
 
@@ -153,17 +156,33 @@
 								</tr>
 								<tr>
 									<th>작성일</th>
-									<td class="text-align-left text-indent" colspan="3">${requestScope.notice.regDate}</td>
+									<td class="text-align-left text-indent" colspan="3">
+										<fmt:parseDate value="${notice.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedDate" type="both"/>
+										<fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${parsedDate}"/>
+									</td>
 								</tr>
 								<tr>
 									<th>작성자</th>
 									<td>${requestScope.notice.writerId}</td>
 									<th>조회수</th>
-									<td>${requestScope.notice.hit}</td>
+									<td>
+										<fmt:formatNumber value="${requestScope.notice.hit}"/>
+									</td>
 								</tr>
 								<tr>
 									<th>첨부파일</th>
-									<td colspan="3">${requestScope.notice.files}</td>
+									<td colspan="3" style="text-align:left; text-indent:10px;">
+										<c:forTokens var="fileName" items="${requestScope.notice.files}" delims="," varStatus="st">
+											<c:set var="style" value=""/>
+											<c:if test="${fn:endsWith(fileName, '.zip')}">
+												<c:set var="style" value="font-weight: bold; color: red;"/>
+											</c:if>
+											<a href="${fileName}" style="${style}">${fn:toUpperCase(fileName)}</a>
+											<c:if test="${!st.last}">
+												/
+											</c:if>
+										</c:forTokens>
+									</td>
 								</tr>
 								<tr class="content">
 									<td colspan="4">${requestScope.notice.content}</td>
@@ -173,7 +192,7 @@
 					</div>
 					
 					<div class="margin-top text-align-center">
-						<a class="btn btn-list" href="list.html">목록</a>
+						<a class="btn btn-list" href="list">목록</a>
 					</div>
 					
 					<div class="margin-top">

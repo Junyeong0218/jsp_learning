@@ -37,7 +37,7 @@ public class ReadNoticeList extends HttpServlet {
 		
 		request.setAttribute("notices", notices);
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/notice/list.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/notice/list.jsp");
 		dispatcher.forward(request, response);
 		
 	}

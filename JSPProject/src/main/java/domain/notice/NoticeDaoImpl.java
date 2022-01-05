@@ -31,7 +31,7 @@ public class NoticeDaoImpl implements NoticeDao {
 			notice.setId(id);
 			notice.setTitle(rs.getString("title"));
 			notice.setWriterId(rs.getString("writer_id"));
-			notice.setRegDate(rs.getDate("regdate"));
+			notice.setRegDate(rs.getTimestamp("regdate").toLocalDateTime());
 			notice.setHit(rs.getInt("hit"));
 			notice.setFiles(rs.getString("files") == null? "": rs.getString("files"));
 			notice.setContent(rs.getString("content"));
@@ -62,7 +62,7 @@ public class NoticeDaoImpl implements NoticeDao {
 										   rs.getString("title"),
 										   rs.getString("writer_id"),
 										   rs.getString("content"),
-										   rs.getDate("regdate"),
+										   rs.getTimestamp("regdate").toLocalDateTime(),
 										   rs.getInt("hit"),
 										   rs.getString("files") == null? "": rs.getString("files")
 											);
