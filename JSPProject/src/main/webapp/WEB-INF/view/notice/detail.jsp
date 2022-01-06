@@ -33,7 +33,7 @@
             <!-- ---------------------------<header>--------------------------------------- -->
 
             <h1 id="logo">
-                <a href="/index.html">
+                <a href="/index">
                     <img src="/images/logo.png" alt="뉴렉처 온라인" />
 
                 </a>
@@ -173,11 +173,7 @@
 									<th>첨부파일</th>
 									<td colspan="3" style="text-align:left; text-indent:10px;">
 										<c:forTokens var="fileName" items="${requestScope.notice.files}" delims="," varStatus="st">
-											<c:set var="style" value=""/>
-											<c:if test="${fn:endsWith(fileName, '.zip')}">
-												<c:set var="style" value="font-weight: bold; color: red;"/>
-											</c:if>
-											<a href="${fileName}" style="${style}">${fn:toUpperCase(fileName)}</a>
+											<a href="${fileName}">${fileName}</a>
 											<c:if test="${!st.last}">
 												/
 											</c:if>
@@ -201,7 +197,14 @@
 								
 								<tr>
 									<th>다음글</th>
-									<td colspan="3"  class="text-align-left text-indent">다음글이 없습니다.</td>
+									<td colspan="3"  class="text-align-left text-indent">
+										<c:if test="${empty requestScope.nextno.id}">
+											다음 글이 없습니다.
+										</c:if>
+										<c:if test="${!empty requestScope.nextno}">
+											<a class="text-blue text-strong" href="/notice/detail?id=${requestScope.nextno.id}">${requestScope.nextno.title}</a>
+										</c:if>
+									</td>
 								</tr>
 								
 									
@@ -209,7 +212,14 @@
 								
 								<tr>
 									<th>이전글</th>
-									<td colspan="3"  class="text-align-left text-indent"><a class="text-blue text-strong" href="">스프링 DI 예제 코드</a></td>
+									<td colspan="3"  class="text-align-left text-indent">
+										<c:if test="${empty requestScope.prevno.id}">
+											이전 글이 없습니다.
+										</c:if>
+										<c:if test="${!empty requestScope.prevno}">
+											<a class="text-blue text-strong" href="/notice/detail?id=${requestScope.prevno.id}">${requestScope.prevno.title}</a>
+										</c:if>
+									</td>
 								</tr>
 								
 								

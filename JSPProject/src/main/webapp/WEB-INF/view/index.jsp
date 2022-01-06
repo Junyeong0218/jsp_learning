@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 
@@ -19,7 +21,7 @@
             <!-- ---------------------------<header>--------------------------------------- -->
 
             <h1 id="logo">
-                <a href="/index.html">
+                <a href="/index">
                     <img src="/images/logo.png" alt="뉴렉처 온라인" />
 
                 </a>
@@ -139,7 +141,7 @@
                 </ul>
             </section>
             <section class="notice">
-                <h1 class="title">공지사항</h1>
+                <a href="/notice/list?list=1"><h1 class="title">공지사항</h1></a>
                 <ul class="list margin-top">
 
                     <li>
