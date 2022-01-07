@@ -22,10 +22,6 @@ public class Index extends HttpServlet{
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		NoticeService noticeService = new NoticeService();
-		
-		List<NoticeView> newestNotices = noticeService.getNoticeNewestList();
-		
-		request.setAttribute("newestNotices", newestNotices);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/admin/index.jsp");
 		dispatcher.forward(request, response);

@@ -81,7 +81,7 @@
                         <h1 class="hidden">고객메뉴</h1>
                         <ul class="linear-layout">
                             <li><a href="/member/home"><img src="/images/txt-mypage.png" alt="마이페이지" /></a></li>
-                            <li><a href="/notice/list.html"><img src="/images/txt-customer.png" alt="고객센터" /></a></li>
+                            <li><a href="/notice/list"><img src="/images/txt-customer.png" alt="고객센터" /></a></li>
                         </ul>
                     </nav>
 
@@ -222,7 +222,11 @@
 	
 		<c:forEach var="i" begin="0" end="4">
 			<c:if test="${requestScope.startNum + i <= requestScope.lastNum}">
-				<li><a class="-text- orange bold" href="?list=${requestScope.startNum + i}&option=${requestScope.option}&keyword=${requestScope.keyword}" >${requestScope.startNum + i}</a></li>
+				<c:set var="style" value="-text" />
+				<c:if test="${requestScope.startNum + i == param.list}">
+					<c:set var="style" value="-text- orange bold" />
+				</c:if>
+				<li><a class="${style}" href="?list=${requestScope.startNum + i}&option=${requestScope.option}&keyword=${requestScope.keyword}" >${requestScope.startNum + i}</a></li>
 			</c:if>
 		</c:forEach>
 		

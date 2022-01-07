@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
 <!DOCTYPE html>
 <html>
 
@@ -141,43 +143,24 @@
                 </ul>
             </section>
             <section class="notice">
-                <a href="/notice/list?list=1"><h1 class="title">공지사항</h1></a>
+                <a href="/notice/list?list=1">
+                	<h1 class="title">공지사항</h1>
+                </a>
                 <ul class="list margin-top">
+                
+                <c:forEach var="newestNotice" items="${requestScope.newestNotices}">
 
                     <li>
                         <span class="notice-title">
-                            <a href="notice/detail.html">스프링 8강까지의 예제 코드</a>
+                            <a href="notice/detail?id=${newestNotice.id}">${newestNotice.title}</a>
                         </span>
-                        <span>2019-08-18</span>
+                        <span>
+							<fmt:parseDate var="parsedDate" value="${newestNotice.regDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" type="both"/>
+							<fmt:formatDate pattern="yyyy-MM-dd" value="${parsedDate}"/>
+						</span>
                     </li>
 
-                    <li>
-                        <span class="notice-title">
-                            <a href="notice/detail.html">스프링 DI 예제 코드</a>
-                        </span>
-                        <span>2019-08-15</span>
-                    </li>
-
-                    <li>
-                        <span class="notice-title">
-                            <a href="notice/detail.html">뉴렉쌤 9월 초 국기과정 모집 안내</a>
-                        </span>
-                        <span>2019-06-11</span>
-                    </li>
-
-                    <li>
-                        <span class="notice-title">
-                            <a href="notice/detail.html">뉴렉처 강의 수강 방식 안내</a>
-                        </span>
-                        <span>2019-05-24</span>
-                    </li>
-
-                    <li>
-                        <span class="notice-title">
-                            <a href="notice/detail.html">자바 구조적인 프로그래밍 강의 예제 파일</a>
-                        </span>
-                        <span>2019-04-24</span>
-                    </li>
+				</c:forEach>
 
                 </ul>
             </section>
