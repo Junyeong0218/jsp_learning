@@ -60,7 +60,7 @@
                         <h1 class="hidden">회원메뉴</h1>
                         <ul>
                             <li><a href="/index.html">HOME</a></li>
-                            <li><a href="/member/login.html">로그인</a></li>
+                            <li><a href="/member/login">로그인</a></li>
                             <li><a href="/member/agree.html">회원가입</a></li>
                         </ul>
                     </nav>

@@ -25,6 +25,8 @@ public class NoticeList extends HttpServlet {
 		String option = request.getParameter("option");
 		String keyword = request.getParameter("keyword");
 		
+		final boolean PUBBED = true;
+		
 		int list = 1;
 		
 		if(!isEmpty(tempList)) {
@@ -38,11 +40,11 @@ public class NoticeList extends HttpServlet {
 		int noticeCnt;
 		
 		if(!isEmpty(keyword)) {
-			notices = noticeService.getNoticeViewList(option, keyword, list);
-			noticeCnt = noticeService.getNoticeCount(option, keyword);
+			notices = noticeService.getNoticeViewList(option, keyword, list, PUBBED);
+			noticeCnt = noticeService.getNoticeCount(option, keyword, PUBBED);
 		} else {
-			notices = noticeService.getNoticeViewList(list);
-			noticeCnt = noticeService.getNoticeCount();
+			notices = noticeService.getNoticeViewList(list, PUBBED);
+			noticeCnt = noticeService.getNoticeCount(PUBBED);
 		}
 		
 		int lastNum = noticeCnt / 10;

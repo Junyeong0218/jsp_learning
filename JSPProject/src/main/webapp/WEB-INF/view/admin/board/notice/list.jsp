@@ -144,12 +144,12 @@
 						<fieldset>
 							<legend class="hidden">공지사항 검색 필드</legend>
 							<label class="hidden">검색분류</label>
-							<select name="f">
+							<select name="option">
 								<option value="title">제목</option>
 								<option value="writerId">작성자</option>
 							</select>
 							<label class="hidden">검색어</label>
-							<input type="text" name="q" value="" />
+							<input type="text" name="keyword" value="" />
 							<input class="btn btn-search" type="submit" value="검색" />
 						</fieldset>
 					</form>
@@ -174,6 +174,10 @@
 							<tbody>
 	
 								<c:forEach var="notice" items="${notices}">
+								<c:set var="checked" value=""/>
+								<c:if test="${notice.pub == 1}">
+									<c:set var="checked" value="checked"/>
+								</c:if>
 								
 									<tr>
 										<td>${notice.id}</td>
@@ -186,7 +190,7 @@
 										<td>
 											<fmt:formatNumber value="${notice.hit}"/>
 										</td>
-										<td><input type="checkbox" name="open-id" value="${notice.id}"></td>
+										<td><input type="checkbox" name="open-id" value="${notice.id}" ${checked}></td>
 										<td><input type="checkbox" name="del-id" value="${notice.id}"></td>
 									</tr>
 								
@@ -202,9 +206,14 @@
 					</div>
 					
 					<div class="text-align-right margin-top">
-						<input type="submit" class="btn-text btn-default" value="일괄공개">
-						<input type="submit" class="btn-text btn-default" value="일괄삭제">
-						<a class="btn-text btn-default" href="/reg">글쓰기</a>
+						<c:set var="allIds" value=""/>
+						<c:forEach var="notice" items="${notices}">
+							<c:set var="allIds" value="${allIds} ${notice.id}" />
+						</c:forEach>
+						<input type="hidden" name="allIds" value="${allIds}">
+						<input type="submit" class="btn-text btn-default" name="btn" value="일괄공개">
+						<input type="submit" class="btn-text btn-default" name="btn" value="일괄삭제">
+						<a class="btn-text btn-default" href="reg">글쓰기</a>
 					</div>
 					
 				</form>
@@ -227,7 +236,7 @@
 					<c:forEach var="i" begin="0" end="4">
 						<c:if test="${requestScope.startNum + i <= requestScope.lastNum}">
 							<c:set var="style" value="-text" />
-							<c:if test="${requestScope.startNum + i == param.list}">
+							<c:if test="${requestScope.startNum + i == requestScope.list}">
 								<c:set var="style" value="-text- orange bold" />
 							</c:if>
 							<li><a class="${style}" href="?list=${requestScope.startNum + i}&option=${requestScope.option}&keyword=${requestScope.keyword}" >${requestScope.startNum + i}</a></li>

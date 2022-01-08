@@ -72,7 +72,7 @@
                         <h1 class="hidden">회원메뉴</h1>
                         <ul>
                             <li><a href="/index.html">HOME</a></li>
-                            <li><a href="/member/login.html">로그인</a></li>
+                            <li><a href="/member/login">로그인</a></li>
                             <li><a href="/member/agree.html">회원가입</a></li>
                         </ul>
                     </nav>
@@ -223,7 +223,7 @@
 		<c:forEach var="i" begin="0" end="4">
 			<c:if test="${requestScope.startNum + i <= requestScope.lastNum}">
 				<c:set var="style" value="-text" />
-				<c:if test="${requestScope.startNum + i == param.list}">
+				<c:if test="${requestScope.startNum + i == requestScope.list}">
 					<c:set var="style" value="-text- orange bold" />
 				</c:if>
 				<li><a class="${style}" href="?list=${requestScope.startNum + i}&option=${requestScope.option}&keyword=${requestScope.keyword}" >${requestScope.startNum + i}</a></li>

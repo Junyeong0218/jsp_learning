@@ -2,5 +2,6 @@ package domain.user;
 
 public interface UserDao {
 
-	public int selectUserByUsername(String username);
+	public User selectUserByUsername(String username);
+	public int signinByUser(User user);
 }

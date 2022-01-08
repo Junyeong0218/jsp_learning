@@ -35,6 +35,7 @@ public class NoticeDaoImpl implements NoticeDao {
 			notice.setHit(rs.getInt("hit"));
 			notice.setFiles(rs.getString("files") == null? "": rs.getString("files"));
 			notice.setContent(rs.getString("content"));
+			notice.setPub(rs.getInt("pub"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -51,7 +52,7 @@ public class NoticeDaoImpl implements NoticeDao {
 		ResultSet rs = null;
 		String sql = "SELECT id FROM ( "
 					+ "SELECT id, ROW_NUMBER() over() AS rownum FROM notice "
-					+ "WHERE regdate > (SELECT regdate FROM notice WHERE id = ?)) AS t "
+					+ "WHERE regdate > (SELECT regdate FROM notice WHERE id = ?) and pub = 1) AS t "
 					+ "WHERE t.rownum = 1";
 		int nextId = 0;
 		
@@ -82,7 +83,7 @@ public class NoticeDaoImpl implements NoticeDao {
 		ResultSet rs = null;
 		String sql = "SELECT id FROM ( "
 					+ "SELECT id, ROW_NUMBER() over(order by id desc) AS rownum FROM notice "
-					+ "WHERE regdate < (SELECT regdate FROM notice WHERE id = ?)) AS t "
+					+ "WHERE regdate < (SELECT regdate FROM notice WHERE id = ?) and pub = 1) AS t "
 					+ "WHERE t.rownum = 1";
 		int prevId = 0;
 		
@@ -114,7 +115,7 @@ public class NoticeDaoImpl implements NoticeDao {
 			Connection con = null;
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
-			String sql = "select id, title from notice where id = ?";
+			String sql = "select id, title from notice where id = ? and pub = 1";
 			Notice notice = null;
 
 			try {
@@ -140,20 +141,26 @@ public class NoticeDaoImpl implements NoticeDao {
 	}
 	
 	@Override
-	public List<NoticeView> getNoticesByListId(String option, String keyword, int list) {
+	public List<NoticeView> getNoticesByListId(String option, String keyword, int list, boolean pub) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		int rownum = (list - 1) * 10 + 1;
+		String pubbed = "";
+		String pubbed_ = "";
+		if(pub == true) {
+			pubbed = "where pub = 1";
+			pubbed_ = "and pub = 1";
+		}
 		String sql = "SELECT * FROM ( "
-					+ "SELECT *, ROW_NUMBER() over(order by id desc) AS rownum FROM notice_view) AS t "
+					+ "SELECT *, ROW_NUMBER() over(order by id desc) AS rownum FROM notice_view " + pubbed + ") AS t "
 					+ "WHERE t.rownum between "+ rownum +" and " + (rownum + 9);
 		
 		if(keyword != null) {
 			sql = "SELECT * FROM ( "
 					+ "SELECT *, ROW_NUMBER() over(ORDER BY id DESC) AS rownum "
 					+ "FROM notice_view "
-					+ "WHERE " + option + " LIKE ? "
+					+ "WHERE (" + option + " LIKE ?)" + pubbed_ + " "
 					+ ") AS t "
 				+ "WHERE t.rownum BETWEEN " + rownum + " and " + (rownum + 9);
 		}
@@ -177,6 +184,7 @@ public class NoticeDaoImpl implements NoticeDao {
 				notice.setRegDate(rs.getTimestamp("regdate").toLocalDateTime());
 				notice.setHit(rs.getInt("hit"));
 				notice.setFiles(rs.getString("files") == null? "": rs.getString("files"));
+				notice.setPub(rs.getInt("pub"));
 				notice.setCommentCnt(rs.getInt("cmt_count"));
 				
 				notices.add(notice);
@@ -196,7 +204,7 @@ public class NoticeDaoImpl implements NoticeDao {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql = "SELECT id, title, regdate FROM ( "
-						+ "SELECT *, ROW_NUMBER() over(order by id desc) AS rownum FROM notice_view) AS t "
+						+ "SELECT *, ROW_NUMBER() over(order by id desc) AS rownum FROM notice_view where pub = 1) AS t "
 						+ "WHERE t.rownum between 1 and 5";
 		List<NoticeView> notices = new ArrayList<NoticeView>();
 
@@ -224,15 +232,21 @@ public class NoticeDaoImpl implements NoticeDao {
 	}
 	
 	@Override
-	public int getNoticeCount(String option, String keyword) {
+	public int getNoticeCount(String option, String keyword ,boolean pub) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String sql = "select count(*) from notice";
+		String pubbed = "";
+		String pubbed_ = "";
+		if(pub == true) {
+			pubbed = " where pub = 1";
+			pubbed_ = " and pub = 1";
+		}
+		String sql = "select count(*) from notice" + pubbed;
 		int result = 0;
 		
 		if(keyword != null) {
-			sql = "select count(*) from notice where " + option + " like ?";
+			sql = "select count(*) from notice where (" + option + " like ?)" + pubbed_;
 		}
 
 		try {
@@ -252,6 +266,93 @@ public class NoticeDaoImpl implements NoticeDao {
 			e.printStackTrace();
 		} finally {
 			pool.freeConnection(con, pstmt, rs);
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public int deleteNotices(int[] ids) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		String params = "";
+		
+		for(int i=0; i<ids.length; i++) {
+			params += ids[i];
+			if(i < ids.length - 1) {
+				params += ",";
+			}
+		}
+		
+		String sql = "delete from notice where id in(" + params + ")";
+		int result = 0;
+		
+		try {
+			con = pool.getConnection();
+			pstmt = con.prepareStatement(sql);
+			result = pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public int pubNotices(List<Notice> list) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		String sql = "update notice set pub = ? where id = ?";
+		int result = 0;
+		
+		try {
+			con = pool.getConnection();
+			
+			for(Notice notice : list) {
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, notice.getPub());
+				pstmt.setInt(2, notice.getId());
+				pstmt.executeUpdate();
+				result++;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public int insertNotice(Notice notice) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		String sql = "insert into notice values(0, ?, ?, ?, now(), 0, ?, ?)";
+		int result = 0;
+		
+		try {
+			con = pool.getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, notice.getTitle());
+			pstmt.setString(2, notice.getWriterId());
+			pstmt.setString(3, notice.getContent());
+			pstmt.setString(4, notice.getFiles());
+			pstmt.setInt(5, notice.getPub());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
 		}
 		
 		return result;

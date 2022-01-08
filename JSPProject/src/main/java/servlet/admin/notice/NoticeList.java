@@ -2,6 +2,7 @@ package servlet.admin.notice;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import domain.notice.NoticeView;
 import service.NoticeService;
 
-@WebServlet("/admin/notice/list")
+@WebServlet("/admin/board/notice/list")
 public class NoticeList extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
@@ -24,6 +25,8 @@ public class NoticeList extends HttpServlet {
 		String tempList = request.getParameter("list");
 		String option = request.getParameter("option");
 		String keyword = request.getParameter("keyword");
+		
+		final boolean PUBBED = false;
 		
 		int list = 1;
 		
@@ -38,11 +41,11 @@ public class NoticeList extends HttpServlet {
 		int noticeCnt;
 		
 		if(!isEmpty(keyword)) {
-			notices = noticeService.getNoticeViewList(option, keyword, list);
-			noticeCnt = noticeService.getNoticeCount(option, keyword);
+			notices = noticeService.getNoticeViewList(option, keyword, list, PUBBED);
+			noticeCnt = noticeService.getNoticeCount(option, keyword, PUBBED);
 		} else {
-			notices = noticeService.getNoticeViewList(list);
-			noticeCnt = noticeService.getNoticeCount();
+			notices = noticeService.getNoticeViewList(list, PUBBED);
+			noticeCnt = noticeService.getNoticeCount(PUBBED);
 		}
 		
 		int lastNum = noticeCnt / 10;
@@ -59,6 +62,32 @@ public class NoticeList extends HttpServlet {
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/admin/board/notice/list.jsp");
 		dispatcher.forward(request, response);
+		
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		String allIds_ = request.getParameter("allIds");
+		String[] openIds = request.getParameterValues("open-id");
+		String[] delIds = request.getParameterValues("del-id");
+		String btnFlag = request.getParameter("btn");
+		
+		StringTokenizer st = new StringTokenizer(allIds_, " ");
+		String[] allIds = new String[st.countTokens()];
+		for(int i=0; i<allIds.length; i++) {
+			allIds[i] = st.nextToken();
+		}
+		
+		NoticeService noticeService = new NoticeService();
+		
+		if(btnFlag.equals("ÀÏ°ý°ø°³")) {
+			noticeService.pubNoticeAll(allIds, openIds);
+		} else if(btnFlag.equals("ÀÏ°ý»èÁ¦")) {
+			noticeService.deleteNoticeAll(delIds);
+		}
+
+		response.sendRedirect("list");
 		
 	}
 	

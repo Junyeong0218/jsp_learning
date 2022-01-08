@@ -20,5 +20,6 @@ public class Notice {
 	private LocalDateTime regDate;
 	private int hit;
 	private String files;
+	private int pub;
 
 }

@@ -1,3 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
+
 <!DOCTYPE html>
 <html>
 
@@ -27,7 +32,7 @@
             <!-- ---------------------------<header>--------------------------------------- -->
 
             <h1 id="logo">
-                <a href="/index.html">
+                <a href="/index">
                     <img src="/images/logo.png" alt="뉴렉처 온라인" />
 
                 </a>
@@ -63,7 +68,7 @@
                     <nav id="acount-menu">
                         <h1 class="hidden">회원메뉴</h1>
                         <ul>
-                            <li><a href="/index.html">HOME</a></li>
+                            <li><a href="/index">HOME</a></li>
 
 
 
@@ -84,7 +89,7 @@
                         <h1 class="hidden">고객메뉴</h1>
                         <ul class="linear-layout">
                             <li><a href="/member/home"><img src="/images/txt-mypage.png" alt="마이페이지" /></a></li>
-                            <li><a href="/notice/list.html"><img src="/images/txt-customer.png" alt="고객센터" /></a></li>
+                            <li><a href="/notice/list"><img src="/images/txt-customer.png" alt="고객센터" /></a></li>
                         </ul>
                     </nav>
 
@@ -124,7 +129,7 @@
                 <nav class="menu text-menu">
                     <h1>알림관리</h1>
                     <ul>
-                        <li><a href="/admin/board/notice/list.html">공지사항</a></li>
+                        <li><a href="/admin/board/notice/list">공지사항</a></li>
                     </ul>
                 </nav>
 
@@ -146,7 +151,7 @@
                     </ul>
                 </div>
 
-                <form method="post" enctype="multipart/form-data">
+                <form action="reg" method="post" enctype="multipart/form-data">
                     <div class="margin-top first">
                         <h3 class="hidden">공지사항 입력</h3>
                         <table class="table">
@@ -156,6 +161,11 @@
                                     <td class="text-align-left text-indent text-strong text-orange" colspan="3">
                                         <input type="text" name="title" />
                                     </td>
+                                </tr>
+                                <tr>
+                                    <th>첨부파일</th>
+                                    <td colspan="3" class="text-align-left text-indent"><input type="file"
+                                            name="file" /> </td>
                                 </tr>
                                 <tr>
                                     <th>첨부파일</th>
@@ -173,7 +183,7 @@
                     </div>
                     <div class="margin-top text-align-center">
                         <input class="btn-text btn-default" type="submit" value="등록" />
-                        <a class="btn-text btn-cancel" href="list.html">취소</a>
+                        <a class="btn-text btn-cancel" href="list">취소</a>
                     </div>
                 </form>
 
