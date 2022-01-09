@@ -1,3 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
 <!DOCTYPE html>
 <html>
 
@@ -27,7 +31,7 @@
             <!-- ---------------------------<header>--------------------------------------- -->
 
             <h1 id="logo">
-                <a href="/index.html">
+                <a href="/index">
                     <img src="/images/logo.png" alt="뉴렉처 온라인" />
 
                 </a>
@@ -64,8 +68,8 @@
                         <h1 class="hidden">회원메뉴</h1>
                         <ul>
                             <li><a href="/index.html">HOME</a></li>
-                            <li><a href="/member/login.html">로그인</a></li>
-                            <li><a href="/member/agree.html">회원가입</a></li>
+                            <li><a href="/member/login">로그인</a></li>
+                            <li><a href="/member/agree">회원가입</a></li>
                         </ul>
                     </nav>
 
@@ -73,7 +77,7 @@
                         <h1 class="hidden">고객메뉴</h1>
                         <ul class="linear-layout">
                             <li><a href="/member/home"><img src="/images/txt-mypage.png" alt="마이페이지" /></a></li>
-                            <li><a href="/notice/list.html"><img src="/images/txt-customer.png" alt="고객센터" /></a></li>
+                            <li><a href="/notice/list"><img src="/images/txt-customer.png" alt="고객센터" /></a></li>
                         </ul>
                     </nav>
 
@@ -107,8 +111,8 @@
 				<nav class="menu text-menu first margin-top">
 					<h1>회원메뉴</h1>
 					<ul>
-						<li><a href="/member/login.html">로그인</a></li>
-						<li><a href="/member/join.html">회원가입</a></li>
+						<li><a href="/member/login">로그인</a></li>
+						<li><a href="/member/agree">회원가입</a></li>
 						<li><a href="/member/">아이디찾기</a></li>
 						<li><a href="/member/t">비밀번호 재발급</a></li>
 					</ul>
@@ -152,7 +156,7 @@
                 </div>
                 
                 
-                <form id="form1" method="post" enctype="multipart/form-data">
+                <form id="form1" method="post" action="/member/join">
                     <fieldset>
                         <legend class="hidden">회원정보</legend>
                         <table class="table margin-top first">
@@ -160,19 +164,19 @@
                                 <tr>
                                     <th><label>아이디</label></th>
                                     <td colspan="3" class="text-align-left indent">
-                                        <input id="id-text" type="text" name="id" class="width-half"  required="required" value="" placeholder="영문과 숫자 6~20자 이내" pattern="^\w{6,20}$" />
-                                        <input class="btn-text btn-default" type="button" id="id-check-button" value="중복확인" />								
+                                        <input id="id-text" type="text" name="username" class="width-half"  required="required" value="" placeholder="영문과 숫자 6~20자 이내" pattern="^\w{6,20}$" oninput="resetCheckedId()" />
+                                        <input class="btn-text btn-default" type="button" id="id-check-button" value="중복확인" onclick="confirmId()"/>								
                                     </td>
                                 </tr>
                                 <tr>
                                     <th><label>비밀번호</label></th>
                                     <td colspan="3" class="text-align-left indent">
-                                        <input type="password" name="pwd" class="" required placeholder="비밀번호 입력" />
+                                        <input type="password" name="pwd" class="" required placeholder="비밀번호 입력" oninput="confirmPw()"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th><label>비밀번호 확인</label></th>
-                                    <td colspan="3" class="text-align-left indent"><input class="" name="pwd2" type="password" required /></td>
+                                    <td colspan="3" class="text-align-left indent"><input class="" name="pwd2" type="password" required oninput="confirmPw()"/></td>
                                 </tr>
                                 <tr>
                                     <th><label>이름</label></th>
@@ -207,8 +211,8 @@
                                         <!-- <input name="y" type="text" class="width-small margin-hor" style="margin-left:0px;" />년
                                         <input name="m" type="text" class="width-small margin-hor" />월
                                         <input name="d" type="text" class="width-small margin-hor" />일 -->
-                                        <input type="radio" name="isLunar" value="0" class="vertical-middle margin-hor" checked />양력
-                                        <input type="radio" name="isLunar" value="1" class="vertical-middle margin-hor"  />음력
+                                        <!-- <input type="radio" name="isLunar" value="0" class="vertical-middle margin-hor" checked />양력 -->
+                                        <!-- <input type="radio" name="isLunar" value="1" class="vertical-middle margin-hor"  />음력 -->
                                     </td>
                                 </tr>
                                 <tr>
@@ -223,7 +227,7 @@
                                 <tr>
                                     <td colspan="4">
                                         <input type="hidden" name="" value="" />
-                                        <input id="submit-Button" type="submit" name="btn" value="확인" style="height: 30px; margin:20px;" class="btn-text btn-default" />
+                                        <input id="submit-Button" type="submit" name="btn" value="확인" style="height: 30px; margin:20px;" class="btn-text btn-default" disabled="disabled"/>
                                     </td>
                                 </tr>
                             </tbody>
@@ -269,5 +273,7 @@
                 </div>
             </div>
         </footer>
+        <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript" src="/js/checkJoin.js"></script>
 </body>
 </html>

@@ -112,7 +112,7 @@
 					<h1>회원메뉴</h1>
 					<ul>
 						<li><a href="/member/login">로그인</a></li>
-						<li><a href="/member/join">회원가입</a></li>
+						<li><a href="/member/agree">회원가입</a></li>
 						<li><a href="/member/">아이디찾기</a></li>
 						<li><a href="/member/t">비밀번호 재발급</a></li>
 					</ul>

@@ -1,3 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
 <!DOCTYPE html>
 <html>
 
@@ -27,7 +31,7 @@
             <!-- ---------------------------<header>--------------------------------------- -->
 
             <h1 id="logo">
-                <a href="/index.html">
+                <a href="/index">
                     <img src="/images/logo.png" alt="뉴렉처 온라인" />
 
                 </a>
@@ -64,8 +68,8 @@
                         <h1 class="hidden">회원메뉴</h1>
                         <ul>
                             <li><a href="/index.html">HOME</a></li>
-                            <li><a href="/member/login.html">로그인</a></li>
-                            <li><a href="/member/agree.html">회원가입</a></li>
+                            <li><a href="/member/login">로그인</a></li>
+                            <li><a href="/member/agree">회원가입</a></li>
                         </ul>
                     </nav>
 
@@ -73,7 +77,7 @@
                         <h1 class="hidden">고객메뉴</h1>
                         <ul class="linear-layout">
                             <li><a href="/member/home"><img src="/images/txt-mypage.png" alt="마이페이지" /></a></li>
-                            <li><a href="/notice/list.html"><img src="/images/txt-customer.png" alt="고객센터" /></a></li>
+                            <li><a href="/notice/list"><img src="/images/txt-customer.png" alt="고객센터" /></a></li>
                         </ul>
                     </nav>
 
@@ -106,8 +110,8 @@
 				<nav class="menu text-menu first margin-top">
 					<h1>회원메뉴</h1>
 					<ul>
-						<li><a href="/member/login.html">로그인</a></li>
-						<li><a href="/member/join.html">회원가입</a></li>
+						<li><a href="/member/login">로그인</a></li>
+						<li><a href="/member/agree">회원가입</a></li>
 						<li><a href="/member/">아이디찾기</a></li>
 						<li><a href="/member/t">비밀번호 재발급</a></li>
 					</ul>
@@ -155,7 +159,7 @@
                         <img style="margin-left:170px; margin-top:70px;" alt="뉴렉처의 회원가입이 완료되었습니다." src="../images/member/txt-join-welcome.png">
                     </div>
                     <div class="text-align-center">
-                        <a class="btn" style="margin-left:170px; margin-top:50px;display:inline-block;width:83px;height: 53px;background: url('../images/member/btn-login.png') no-repeat center;" href="login.html">메인페이지로 이동합니다.</a>
+                        <a class="btn" style="margin-left:170px; margin-top:50px;display:inline-block;width:83px;height: 53px;background: url('../images/member/btn-login.png') no-repeat center;" href="/member/login">로그인페이지로 이동합니다.</a>
                     </div>
                 </div>
             </main>

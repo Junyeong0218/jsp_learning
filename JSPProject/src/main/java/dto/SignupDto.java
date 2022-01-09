@@ -1,29 +1,34 @@
-package domain.user;
+package dto;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
+import domain.user.User;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Data
-public class User {
+public class SignupDto {
 
-	private int id;
 	private String username;
 	private String password;
 	private String name;
-	private String phone;
 	private String gender;
 	private Date birthday;
+	private String phone;
 	private String email;
-	private LocalDateTime signupDate;
-	private LocalDateTime updateDate;
-	private int permission;
 	
+	public User toEntity() {
+		return User.builder()
+				.username(username)
+				.password(password)
+				.name(name)
+				.gender(gender)
+				.birthday(birthday)
+				.phone(phone)
+				.email(email)
+				.build();
+	}
 }

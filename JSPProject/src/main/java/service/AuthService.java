@@ -4,6 +4,7 @@ import domain.user.User;
 import domain.user.UserDao;
 import domain.user.UserDaoImpl;
 import dto.SigninDto;
+import dto.SignupDto;
 import session.Principal;
 
 public class AuthService {
@@ -12,6 +13,15 @@ public class AuthService {
 	
 	public AuthService() {
 		principal = Principal.getInstance();
+	}
+	
+	public int signup(SignupDto signupDto) {
+		User user = signupDto.toEntity();
+		UserDao userDao = new UserDaoImpl();
+		
+		int result = userDao.signup(user);
+		
+		return result;
 	}
 	
 	public int signin(SigninDto signinDto) {
@@ -26,6 +36,10 @@ public class AuthService {
 		}
 		
 		return result;
+	}
+	
+	public void logout() {
+		principal.setLoginUser(null);
 	}
 
 }

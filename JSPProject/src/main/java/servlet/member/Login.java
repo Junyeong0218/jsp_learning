@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dto.SigninDto;
 import service.AuthService;
@@ -24,8 +25,16 @@ public class Login extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/member/login.jsp");
-		dispatcher.forward(request, response);
+		HttpSession session = request.getSession();
+		
+		if(session.getAttribute("User") != null) {
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>alert('이미 로그인 되어 있습니다.'); location.href='/index';</script>'");
+		} else {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/member/login.jsp");
+			dispatcher.forward(request, response);
+		}
 	}
 	
 	@Override
@@ -41,18 +50,20 @@ public class Login extends HttpServlet{
 		AuthService authService = new AuthService();
 		int result = authService.signin(signinDto);
 		
+		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		
 		if(result == 0) {
-			out.println("<script>alert('아이디가 다릅니다.');</script>'");
+			out.println("<script>alert('아이디가 다릅니다.'); location.href='/member/login';</script>'");
 		} else if(result == 1) {
-			out.println("<script>alert('비밀번호가 다릅니다.');</script>'");
+			out.println("<script>alert('비밀번호가 다릅니다.'); location.href='/member/login';</script>'");
 		} else if(result == 2) {
-			out.println("<script>alert(" + principal.getLoginUser().getName() +"'님 환영합니다.');</script>'");
+			HttpSession session = request.getSession();
+			session.setAttribute("User", principal.getLoginUser());
+			out.println("<script>location.href='/index';</script>'");
 		}
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/view/index.jsp");
-		dispatcher.forward(request, response);
+		out.close();
 	}
 
 }
